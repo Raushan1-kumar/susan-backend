@@ -7,7 +7,7 @@ const {authUser} = require('../middlewares/auth.middlewares.js')
 
 router.post('/check-code',questionController.checkQuestions);
 router.post('/give-hint',questionController.giveHint);
-router.post('/puzzle',authUser, questionController.puzzle);
+router.post('/puzzle', questionController.puzzle);
 
 
 module.exports = router;

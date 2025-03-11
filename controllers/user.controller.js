@@ -13,10 +13,10 @@ module.exports.registerUser = async (req, res, next) => {
     });
   }
 
-  const {fullName, email, password}= req.body;
+  const {firstName, lastName, email, password}= req.body;
   const user = await userService.createUser({
-    firstName:fullName.firstName,
-    lastName: fullName.lastName,
+    firstName:firstName,
+    lastName:lastName,
      email,
      password
     });
@@ -51,6 +51,7 @@ module.exports.loginUser = async (req, res, next) => {
     // Find user
     const user = await userModel.findOne({ email }).select('+password');
     if (!user) {
+      console.log("reached");
       return res.status(401).json({
         message: 'Invalid email or password'
       });

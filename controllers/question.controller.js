@@ -5,6 +5,8 @@ const { validationResult } = require('express-validator');
 const {authUser} = require('../middlewares/auth.middlewares.js')
 const hintService = require('../services/ai.hint.service.js');
 const puzzleService = require('../services/puzzle.service.js');
+const hintModel = require('../models/hint.model.js');
+
 
 module.exports.checkQuestions=async (req, res)=>{
          const errors = validationResult(req);
@@ -85,9 +87,43 @@ module.exports.puzzle = async(req, res)=>{
 
   try{
     const puzzle = req.body.puzzle;
+    console.log(puzzle);
      if(!puzzle){
         res.status(400).json({
             msg:"puzzle is required"
+        })
+     }
+     const response = await puzzleService.puzzle(puzzle);
+     if(!response){
+        res.status(400).json({
+            msg:"respond not generated",
+        })
+     }
+     res.status(200).json(
+        {
+            msg:"respond generated",
+            text :response.text,
+        }
+     )
+  }catch(err){
+    console.log(err);
+  }
+}
+
+module.exports.checkIsHintPresent = async(req, res)=>{
+  const errors = validationResult(req);
+  if (!errors.isEmpty()) {
+    return res.status(400).json({
+      errors: errors.array(),
+    });
+  }
+
+  
+  try{
+    const prompt = req.body.prompt;
+     if(!prompt){
+        res.status(400).json({
+            msg:"prompt is required"
         })
      }
      const response = await puzzleService.puzzle(puzzle);
