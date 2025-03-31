@@ -88,6 +88,7 @@ module.exports.puzzle = async(req, res)=>{
   try{
     const puzzle = req.body.puzzle;
     console.log(puzzle);
+    console.log('i have reached here');
      if(!puzzle){
         res.status(400).json({
             msg:"puzzle is required"
@@ -124,6 +125,45 @@ module.exports.checkIsHintPresent = async(req, res)=>{
      if(!prompt){
         res.status(400).json({
             msg:"prompt is required"
+        })
+     }
+     const response = await puzzleService.puzzle(puzzle);
+     if(!response){
+        res.status(400).json({
+            msg:"respond not generated",
+        })
+     }
+     res.status(200).json(
+        {
+            msg:"respond generated",
+            text :response.text,
+        }
+     )
+  }catch(err){
+    console.log(err);
+  }
+}
+
+
+
+
+
+
+module.exports.virtualInvterview = async(req, res)=>{
+  const errors = validationResult(req);
+  if (!errors.isEmpty()) {
+    return res.status(400).json({
+      errors: errors.array(),
+    });
+  }
+
+  try{
+    const puzzle = req.body.puzzle;
+    console.log(puzzle);
+    console.log('i have reached here');
+     if(!puzzle){
+        res.status(400).json({
+            msg:"puzzle is required"
         })
      }
      const response = await puzzleService.puzzle(puzzle);
